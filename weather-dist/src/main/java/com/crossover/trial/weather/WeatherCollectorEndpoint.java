@@ -67,7 +67,7 @@ public interface WeatherCollectorEndpoint {
      * @param longString the airport's longitude in degrees as a string [-180, 180]
      * @return HTTP Response code for the add operation
      */
-    @GET
+    @POST
     @Path("/airport/{iata}/{lat}/{long}")
     Response addAirport(@PathParam("iata") String iata,
                         @PathParam("lat") String latString,

@@ -14,7 +14,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * A simple airport loader which reads a file from disk and sends entries to the
@@ -25,6 +24,8 @@ import javax.ws.rs.core.Response;
  */
 public class AirportLoader {
 
+	public final static String QUERY_TARGET = "http://localhost:9090/query";
+	public final static String COLLECT_TARGET = "http://localhost:9090/collect";
 	/** end point for read queries */
 	private WebTarget query;
 
@@ -33,8 +34,8 @@ public class AirportLoader {
 
 	public AirportLoader() {
 		Client client = ClientBuilder.newClient();
-		query = client.target("http://localhost:9090/query");
-		collect = client.target("http://localhost:9090/collect");
+		query = client.target(QUERY_TARGET);
+		collect = client.target(COLLECT_TARGET);
 	}
 
 	public void upload(InputStream airportDataStream) throws IOException {
@@ -44,10 +45,9 @@ public class AirportLoader {
 		List<AirportData> airportDataList = new ArrayList<>();
 		while ((l = reader.readLine()) != null) {
 			airportDataArray = l.split(",");
-			AirportData airportData = new AirportData(airportDataArray[4], Double.parseDouble(airportDataArray[6]),
+			AirportData airportData = new AirportData(airportDataArray[4].replaceAll("\"", ""), Double.parseDouble(airportDataArray[6]),
 					Double.parseDouble(airportDataArray[7]));
 			airportDataList.add(airportData);
-			
 		}
 		
 //		for(AirportData ad: airportDataList) {

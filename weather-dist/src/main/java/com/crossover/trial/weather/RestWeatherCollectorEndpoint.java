@@ -35,8 +35,8 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
     }
 
     @Override
-    public Response updateWeather(@PathParam("iata") String iataCode,
-                                  @PathParam("pointType") String pointType,
+    public Response updateWeather(String iataCode,
+                                  String pointType,
                                   String datapointJson) {
         try {
             addDataPoint(iataCode, pointType, gson.fromJson(datapointJson, DataPoint.class));
@@ -58,16 +58,16 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
 
 
     @Override
-    public Response getAirport(@PathParam("iata") String iata) {
+    public Response getAirport(String iata) {
         AirportData ad = findAirportData(iata);
         return Response.status(Response.Status.OK).entity(ad).build();
     }
 
 
     @Override
-    public Response addAirport(@PathParam("iata") String iata,
-                               @PathParam("lat") String latString,
-                               @PathParam("long") String longString) {
+    public Response addAirport(String iata,
+                               String latString,
+                               String longString) {
         addAirport(iata, Double.valueOf(latString), Double.valueOf(longString));
         return Response.status(Response.Status.OK).build();
     }
@@ -82,7 +82,7 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
     }
     
     @Override
-    public Response deleteAirport(@PathParam("iata") String iata) {
+    public Response deleteAirport(String iata) {
     	airportData.remove(new AirportData(iata));
         return Response.status(Response.Status.OK).build();
     }
