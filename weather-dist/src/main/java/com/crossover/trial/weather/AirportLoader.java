@@ -26,15 +26,12 @@ public class AirportLoader {
 
 	public final static String QUERY_TARGET = "http://localhost:9090/query";
 	public final static String COLLECT_TARGET = "http://localhost:9090/collect";
-	/** end point for read queries */
-	private WebTarget query;
 
 	/** end point to supply updates */
 	private WebTarget collect;
 
 	public AirportLoader() {
 		Client client = ClientBuilder.newClient();
-		query = client.target(QUERY_TARGET);
 		collect = client.target(COLLECT_TARGET);
 	}
 
@@ -45,15 +42,16 @@ public class AirportLoader {
 		List<AirportData> airportDataList = new ArrayList<>();
 		while ((l = reader.readLine()) != null) {
 			airportDataArray = l.split(",");
-			AirportData airportData = new AirportData(airportDataArray[4].replaceAll("\"", ""), Double.parseDouble(airportDataArray[6]),
-					Double.parseDouble(airportDataArray[7]));
+			AirportData airportData = new AirportData(airportDataArray[4].replaceAll("\"", ""),
+					Double.parseDouble(airportDataArray[6]), Double.parseDouble(airportDataArray[7]));
 			airportDataList.add(airportData);
 		}
-		
-//		for(AirportData ad: airportDataList) {
-//			WebTarget path = collect.path("/airport/"+ad.getIata()+"/"+ad.getLatitude()+"/"+ad.getLongitude());
-//			path.request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
-//		}
+
+		// for(AirportData ad: airportDataList) {
+		// WebTarget path =
+		// collect.path("/airport/"+ad.getIata()+"/"+ad.getLatitude()+"/"+ad.getLongitude());
+		// path.request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
+		// }
 		WebTarget path = collect.path("/airports");
 		path.request().post(Entity.entity(airportDataList, MediaType.APPLICATION_JSON));
 	}
