@@ -122,44 +122,44 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
 		final DataPointType dptype = DataPointType.valueOf(pointType.toUpperCase());
 
 		switch (dptype) {
-		case WIND:
-			if (dp.getMean() >= 0) {
-				ai.setWind(dp);
-				ai.setLastUpdateTime(System.currentTimeMillis());
-			}
-			break;
-		case TEMPERATURE:
-			if (dp.getMean() >= -50 && dp.getMean() < 100) {
-				ai.setTemperature(dp);
-				ai.setLastUpdateTime(System.currentTimeMillis());
-			}
-			break;
-		case HUMIDTY:
-			if (dp.getMean() >= 0 && dp.getMean() < 100) {
-				ai.setHumidity(dp);
-				ai.setLastUpdateTime(System.currentTimeMillis());
-			}
-			break;
-		case PRESSURE:
-			if (dp.getMean() >= 650 && dp.getMean() < 800) {
-				ai.setPressure(dp);
-				ai.setLastUpdateTime(System.currentTimeMillis());
-			}
-			break;
-		case CLOUDCOVER:
-			if (dp.getMean() >= 0 && dp.getMean() < 100) {
-				ai.setCloudCover(dp);
-				ai.setLastUpdateTime(System.currentTimeMillis());
-			}
-			break;
-		case PRECIPITATION:
-			if (dp.getMean() >= 0 && dp.getMean() < 100) {
-				ai.setPrecipitation(dp);
-				ai.setLastUpdateTime(System.currentTimeMillis());
-			}
-			break;
-		default:
-			throw new IllegalStateException("couldn't update atmospheric data");
+			case WIND:
+				if (dp.getMean() >= 0) {
+					ai.setWind(dp);
+					ai.setLastUpdateTime(System.currentTimeMillis());
+				}
+				break;
+			case TEMPERATURE:
+				if (dp.getMean() >= -50 && dp.getMean() < 100) {
+					ai.setTemperature(dp);
+					ai.setLastUpdateTime(System.currentTimeMillis());
+				}
+				break;
+			case HUMIDTY:
+				if (dp.getMean() >= 0 && dp.getMean() < 100) {
+					ai.setHumidity(dp);
+					ai.setLastUpdateTime(System.currentTimeMillis());
+				}
+				break;
+			case PRESSURE:
+				if (dp.getMean() >= 650 && dp.getMean() < 800) {
+					ai.setPressure(dp);
+					ai.setLastUpdateTime(System.currentTimeMillis());
+				}
+				break;
+			case CLOUDCOVER:
+				if (dp.getMean() >= 0 && dp.getMean() < 100) {
+					ai.setCloudCover(dp);
+					ai.setLastUpdateTime(System.currentTimeMillis());
+				}
+				break;
+			case PRECIPITATION:
+				if (dp.getMean() >= 0 && dp.getMean() < 100) {
+					ai.setPrecipitation(dp);
+					ai.setLastUpdateTime(System.currentTimeMillis());
+				}
+				break;
+			default:
+				throw new IllegalStateException("couldn't update atmospheric data");
 		}
 	}
 
