@@ -42,15 +42,28 @@ public class AirportLoader {
 		String l = null;
 		String[] airportDataArray = new String[9];
 		List<AirportData> airportDataList = new ArrayList<>();
+		WebTarget airportsPath = collect.path("/airports");
+		
 		while ((l = reader.readLine()) != null) {
 			airportDataArray = l.split(",");
 			AirportData airportData = new AirportData(airportDataArray[4].replaceAll("\"", ""),
 					Double.parseDouble(airportDataArray[6]), Double.parseDouble(airportDataArray[7]));
 			airportDataList.add(airportData);
+			if(airportDataList.size() == 100) {
+				airportsPath.request().post(Entity.entity(airportDataList, MediaType.APPLICATION_JSON));
+				airportDataList = new ArrayList<>();
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-
-		WebTarget path = collect.path("/airports");
-		path.request().post(Entity.entity(airportDataList, MediaType.APPLICATION_JSON));
+		
+		if(!airportDataList.isEmpty()) {
+			airportsPath.request().post(Entity.entity(airportDataList, MediaType.APPLICATION_JSON));
+			airportDataList = new ArrayList<>();
+		}
 	}
 
 	public static void main(String args[]) throws IOException {
