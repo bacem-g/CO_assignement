@@ -32,7 +32,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	public static final Gson gson = new Gson();
 
 	/** all known airports */
-	protected static List<AirportData> airportData = new ArrayList<>();
+	protected static Map<String, AirportData> airportDataMap = new HashMap<>();
 
 	/** atmospheric information for each airport */
 	protected static Map<String, AtmosphericInformation> atmosphericInformation = new HashMap<>();
@@ -72,7 +72,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 		Map<String, Double> freq = new HashMap<>();
 		// fraction of queries
 		if(!requestFrequency.isEmpty()) {
-			for (AirportData data : airportData) {
+			for (AirportData data : airportDataMap.values()) {
 				double frac = (double) requestFrequency.getOrDefault(data, 0) / requestFrequency.size();
 				freq.put(data.getIata(), frac);
 			}
@@ -113,9 +113,9 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 			retval.add(atmosphericInformation.get(iata));
 		} else {
 			AirportData ad = findAirportData(iata);
-			for (int i = 0; i < airportData.size(); i++) {
-				if (calculateDistance(ad, airportData.get(i)) <= radius) {
-					AtmosphericInformation ai = atmosphericInformation.get(airportData.get(i).getIata());
+			for (AirportData airportData: airportDataMap.values()) {
+				if (calculateDistance(ad, airportData) <= radius) {
+					AtmosphericInformation ai = atmosphericInformation.get(airportData.getIata());
 					if (ai.getCloudCover() != null || ai.getHumidity() != null || ai.getPrecipitation() != null
 							|| ai.getPressure() != null || ai.getTemperature() != null || ai.getWind() != null) {
 						retval.add(ai);
@@ -134,10 +134,10 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	 * @param radius
 	 *            query radius
 	 */
-	public void updateRequestFrequency(String iata, Double radius) {
+	private void updateRequestFrequency(String iata, Double radius) {
 		AirportData airportData = findAirportData(iata);
 		requestFrequency.put(airportData, requestFrequency.getOrDefault(airportData, 0) + 1);
-		radiusFreq.put(radius, radiusFreq.getOrDefault(radius, 0));
+		radiusFreq.put(radius, radiusFreq.getOrDefault(radius, 0) + 1);
 	}
 
 	/**
@@ -148,19 +148,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	 * @return airport data or null if not found
 	 */
 	public static AirportData findAirportData(String iataCode) {
-		return airportData.stream().filter(ap -> ap.getIata().equals(iataCode)).findFirst().orElse(null);
-	}
-
-	/**
-	 * Given an iataCode find the airport data
-	 *
-	 * @param iataCode
-	 *            as a string
-	 * @return airport data or null if not found
-	 */
-	public static int getAirportDataIdx(String iataCode) {
-		AirportData ad = findAirportData(iataCode);
-		return airportData.indexOf(ad);
+		return airportDataMap.get(iataCode);
 	}
 
 	/**
@@ -172,11 +160,11 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	 *            airport 2
 	 * @return the distance in KM
 	 */
-	public double calculateDistance(AirportData ad1, AirportData ad2) {
-		double deltaLat = Math.toRadians(ad2.latitude - ad1.latitude);
-		double deltaLon = Math.toRadians(ad2.longitude - ad1.longitude);
+	public static double calculateDistance(AirportData ad1, AirportData ad2) {
+		double deltaLat = Math.toRadians(ad2.getLatitude() - ad1.getLatitude());
+		double deltaLon = Math.toRadians(ad2.getLongitude() - ad1.getLongitude());
 		double a = Math.pow(Math.sin(deltaLat / 2), 2)
-				+ Math.pow(Math.sin(deltaLon / 2), 2) * Math.cos(ad1.latitude) * Math.cos(ad2.latitude);
+				+ Math.pow(Math.sin(deltaLon / 2), 2) * Math.cos(ad1.getLatitude()) * Math.cos(ad2.getLatitude());
 		double c = 2 * Math.asin(Math.sqrt(a));
 		return R * c;
 	}
@@ -185,7 +173,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	 * A dummy init method that loads hard coded data
 	 */
 	protected static void init() {
-		airportData.clear();
+		airportDataMap.clear();
 		atmosphericInformation.clear();
 		requestFrequency.clear();
 

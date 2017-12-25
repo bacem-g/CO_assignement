@@ -89,11 +89,11 @@ class AtmosphericInformation {
 		this.cloudCover = cloudCover;
 	}
 
-	protected long getLastUpdateTime() {
+	public long getLastUpdateTime() {
 		return this.lastUpdateTime;
 	}
 
-	protected void setLastUpdateTime(long lastUpdateTime) {
+	public void setLastUpdateTime(long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 }

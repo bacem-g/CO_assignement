@@ -47,11 +47,6 @@ public class AirportLoader {
 			airportDataList.add(airportData);
 		}
 
-		// for(AirportData ad: airportDataList) {
-		// WebTarget path =
-		// collect.path("/airport/"+ad.getIata()+"/"+ad.getLatitude()+"/"+ad.getLongitude());
-		// path.request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
-		// }
 		WebTarget path = collect.path("/airports");
 		path.request().post(Entity.entity(airportDataList, MediaType.APPLICATION_JSON));
 	}

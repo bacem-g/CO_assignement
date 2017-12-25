@@ -11,13 +11,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AirportData {
 
 	/** the three letter IATA code */
-	String iata;
+	private String iata;
 
 	/** latitude value in degrees */
-	double latitude;
+	private double latitude;
 
 	/** longitude value in degrees */
-	double longitude;
+	private double longitude;
 
 	public AirportData() {
 	}
@@ -66,6 +66,11 @@ public class AirportData {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return iata.hashCode();
+	}
+	
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
 	}

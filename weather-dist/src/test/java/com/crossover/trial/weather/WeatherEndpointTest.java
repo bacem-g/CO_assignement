@@ -1,14 +1,15 @@
 package com.crossover.trial.weather;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class WeatherEndpointTest {
 
@@ -74,6 +75,14 @@ public class WeatherEndpointTest {
         List<AtmosphericInformation> ais = (List<AtmosphericInformation>) _query.weather("BOS", "0").getEntity();
         assertEquals(ais.get(0).getWind(), windDp);
         assertEquals(ais.get(0).getCloudCover(), cloudCoverDp);
+    }
+    
+    @Test
+    public void testCalculateDistance() {
+    	AirportData ad1 = new AirportData("XXX", 10, 5);
+    	AirportData ad2 = new AirportData("YYY", 10, 5);
+    	double distance = RestWeatherQueryEndpoint.calculateDistance(ad1, ad2);
+    	assertEquals(0.0, distance, 0);
     }
 
 }

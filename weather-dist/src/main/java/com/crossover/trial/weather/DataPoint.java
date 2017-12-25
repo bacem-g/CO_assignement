@@ -11,13 +11,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class DataPoint {
 
-	public double mean = 0.0;
-	public int first = 0;
-	public int second = 0;
-	public int third = 0;
-	public int count = 0;
+	private double mean = 0.0;
+	private int first = 0;
+	private int second = 0;
+	private int third = 0;
+	private int count = 0;
 
-	protected DataPoint(int first, int second, int mean, int third, int count) {
+	private DataPoint(int first, int second, int mean, int third, int count) {
 		this.setFirst(first);
 		this.setMean(mean);
 		this.setSecond(second);
