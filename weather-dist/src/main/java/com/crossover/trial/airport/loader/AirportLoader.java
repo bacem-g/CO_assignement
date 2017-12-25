@@ -1,4 +1,4 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.airport.loader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +14,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+
+import com.crossover.trial.weather.domain.AirportData;
 
 /**
  * A simple airport loader which reads a file from disk and sends entries to the

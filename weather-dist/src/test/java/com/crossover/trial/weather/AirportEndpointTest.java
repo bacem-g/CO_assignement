@@ -12,6 +12,11 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.crossover.trial.weather.domain.AirportData;
+import com.crossover.trial.weather.rest.WeatherCollectorEndpoint;
+import com.crossover.trial.weather.rest.impl.RestWeatherCollectorEndpoint;
+import com.crossover.trial.weather.rest.impl.RestWeatherQueryEndpoint;
+
 public class AirportEndpointTest {
 
 	private WeatherCollectorEndpoint _collector = new RestWeatherCollectorEndpoint();

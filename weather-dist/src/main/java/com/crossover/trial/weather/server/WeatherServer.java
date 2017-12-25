@@ -1,4 +1,4 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.weather.server;
 
 import static java.lang.String.format;
 
@@ -14,6 +14,9 @@ import org.glassfish.grizzly.http.server.HttpServerProbe;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import com.crossover.trial.weather.rest.impl.RestWeatherCollectorEndpoint;
+import com.crossover.trial.weather.rest.impl.RestWeatherQueryEndpoint;
 
 /**
  * This main method will be use by the automated functional grader. You

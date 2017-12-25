@@ -7,6 +7,13 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.crossover.trial.weather.domain.AirportData;
+import com.crossover.trial.weather.domain.AtmosphericInformation;
+import com.crossover.trial.weather.domain.DataPoint;
+import com.crossover.trial.weather.rest.WeatherCollectorEndpoint;
+import com.crossover.trial.weather.rest.WeatherQueryEndpoint;
+import com.crossover.trial.weather.rest.impl.RestWeatherCollectorEndpoint;
+import com.crossover.trial.weather.rest.impl.RestWeatherQueryEndpoint;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -47,9 +54,9 @@ public class WeatherEndpointTest {
     public void testGetNearby() throws Exception {
         // check datasize response
         _update.updateWeather("JFK", "wind", _gson.toJson(_dp));
-        _dp.setMean(40);
+        _dp = new DataPoint.Builder().withMean(40).build();
         _update.updateWeather("EWR", "wind", _gson.toJson(_dp));
-        _dp.setMean(30);
+        _dp = new DataPoint.Builder().withMean(30).build();
         _update.updateWeather("LGA", "wind", _gson.toJson(_dp));
 
         List<AtmosphericInformation> ais = (List<AtmosphericInformation>) _query.weather("JFK", "200").getEntity();

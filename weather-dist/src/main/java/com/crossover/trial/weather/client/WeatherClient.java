@@ -1,10 +1,12 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.weather.client;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+
+import com.crossover.trial.weather.domain.DataPoint;
 
 /**
  * A reference implementation for the weather client. Consumers of the REST API

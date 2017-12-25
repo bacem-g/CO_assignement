@@ -1,9 +1,9 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.weather.domain;
 
 /**
  * encapsulates sensor information for a particular location
  */
-class AtmosphericInformation {
+public class AtmosphericInformation {
 
 	/** temperature in degrees celsius */
 	private DataPoint temperature;
@@ -95,5 +95,14 @@ class AtmosphericInformation {
 
 	public void setLastUpdateTime(long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public boolean isNotNull() {
+		return cloudCover != null || humidity != null || pressure != null
+				|| precipitation != null || temperature != null || wind != null;
+	}
+
+	public boolean isUpdatedLastDay() {
+		return lastUpdateTime > System.currentTimeMillis() - 86400000;
 	}
 }

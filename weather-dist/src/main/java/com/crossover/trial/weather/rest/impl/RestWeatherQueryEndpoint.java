@@ -1,16 +1,20 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.weather.rest.impl;
 
-import static com.crossover.trial.weather.RestWeatherCollectorEndpoint.addAirport;
+import static com.crossover.trial.weather.rest.impl.RestWeatherCollectorEndpoint.addAirport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import com.crossover.trial.weather.rest.WeatherQueryEndpoint;
+import com.crossover.trial.weather.domain.AirportData;
+import com.crossover.trial.weather.domain.AtmosphericInformation;
 import com.google.gson.Gson;
 
 /**
@@ -32,10 +36,10 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	public static final Gson gson = new Gson();
 
 	/** all known airports */
-	protected static Map<String, AirportData> airportDataMap = new HashMap<>();
+	protected static Map<String, AirportData> airportDataMap = new ConcurrentHashMap<>();
 
 	/** atmospheric information for each airport */
-	protected static Map<String, AtmosphericInformation> atmosphericInformation = new HashMap<>();
+	protected static Map<String, AtmosphericInformation> atmosphericInformation = new ConcurrentHashMap<>();
 
 	/**
 	 * Internal performance counter to better understand most requested information,
@@ -44,9 +48,9 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	 * don't want to write this to disk, but will pull it off using a REST request
 	 * and aggregate with other performance metrics {@link #ping()}
 	 */
-	public static Map<AirportData, Integer> requestFrequency = new HashMap<AirportData, Integer>();
+	public static Map<AirportData, Integer> requestFrequency = new ConcurrentHashMap<AirportData, Integer>();
 
-	public static Map<Double, Integer> radiusFreq = new HashMap<Double, Integer>();
+	public static Map<Double, Integer> radiusFreq = new ConcurrentHashMap<Double, Integer>();
 
 	static {
 		init();
@@ -62,9 +66,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	public String ping() {
 		Map<String, Object> retval = new HashMap<>();
 		long datasize = atmosphericInformation.values().stream()
-				.filter(ai -> (ai.getCloudCover() != null || ai.getHumidity() != null || ai.getPressure() != null
-						|| ai.getPrecipitation() != null || ai.getTemperature() != null || ai.getWind() != null)
-						&& (ai.getLastUpdateTime() > System.currentTimeMillis() - 86400000))
+				.filter(ai -> ai.isNotNull() && ai.isUpdatedLastDay())
 				.count();
 
 		retval.put("datasize", datasize);
@@ -172,7 +174,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 	/**
 	 * A dummy init method that loads hard coded data
 	 */
-	protected static void init() {
+	public static void init() {
 		airportDataMap.clear();
 		atmosphericInformation.clear();
 		requestFrequency.clear();

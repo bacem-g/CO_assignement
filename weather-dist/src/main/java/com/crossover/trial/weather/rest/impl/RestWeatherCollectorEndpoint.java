@@ -1,8 +1,8 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.weather.rest.impl;
 
-import static com.crossover.trial.weather.RestWeatherQueryEndpoint.airportDataMap;
-import static com.crossover.trial.weather.RestWeatherQueryEndpoint.atmosphericInformation;
-import static com.crossover.trial.weather.RestWeatherQueryEndpoint.findAirportData;
+import static com.crossover.trial.weather.rest.impl.RestWeatherQueryEndpoint.airportDataMap;
+import static com.crossover.trial.weather.rest.impl.RestWeatherQueryEndpoint.atmosphericInformation;
+import static com.crossover.trial.weather.rest.impl.RestWeatherQueryEndpoint.findAirportData;
 
 import java.util.List;
 import java.util.Set;
@@ -11,6 +11,12 @@ import java.util.logging.Logger;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import com.crossover.trial.weather.domain.AirportData;
+import com.crossover.trial.weather.domain.AtmosphericInformation;
+import com.crossover.trial.weather.domain.DataPoint;
+import com.crossover.trial.weather.domain.DataPointType;
+import com.crossover.trial.weather.exception.WeatherException;
+import com.crossover.trial.weather.rest.WeatherCollectorEndpoint;
 import com.google.gson.Gson;
 
 /**
